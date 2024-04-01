@@ -7,7 +7,7 @@ jobs:
     container: devkitpro/devkita64:latest
 
     steps:
-    - name: Checkout 🛎️
+    - name: Checkout
       uses: actions/checkout@master
       with:
         submodules: recursive
