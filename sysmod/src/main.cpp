@@ -266,8 +266,8 @@ constexpr auto nim_applied(const u8* data, u32 inst) -> bool {
 constinit Patterns fs_patterns[] = {
     { "1_9A", "0x..00.34..b4e8.40b91f010871...54", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
     { "10A", "0xfd7b43a9f44f42a9f65741a9ff030191c0035fd6", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,1) },
-    { "10.2.0_18A", "0x081C00121F050071..0054...37....", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,2,0), MAKEHOSVERSION(18,0,1) },
-    { "18.1.0A", "0xf803002ac0040034b3035ef8f30100b468220091", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(18,1,0), MAKEHOSVERSION(18,1,0) },
+    { "10_18A", "0x081C00121F050071..0054...37....", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,2,0), MAKEHOSVERSION(18,0,1) },
+    { "18A", "0xf803002ac0040034b3035ef8f30100b468220091", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(18,1,0), MAKEHOSVERSION(18,1,0) },
     { "19A", "0x080340b9091c00123f050071610100541f050071", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(19,0,0) },
 
     { "1_9B", "0x.0210911f000072.119f9a.....031faa", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
