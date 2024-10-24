@@ -165,14 +165,6 @@ constexpr auto mov_cond(u32 inst) -> bool {
     return ((inst >> 24) & 0x7F) == 0x52;
 }
 
-auto mov2_cond(u32 inst) -> bool {
-    if (hosversionBefore(15,0,0)) {
-        return (inst >> 24) == 0x92; // and x0, x19, #0xffffffff
-    } else {
-        return (inst >> 24) == 0x2A; // mov x0, x20
-    }
-}
-
 constexpr auto bne_cond(u32 inst) -> bool {
     const auto type = inst >> 24;
     const auto cond = inst & 0x10;
@@ -181,6 +173,18 @@ constexpr auto bne_cond(u32 inst) -> bool {
 
 constexpr auto ctest_cond(u32 inst) -> bool {
     return std::byteswap(0xF50301AA) == inst; // mov x21, x1
+}
+
+constexpr auto adr_cond(u32 inst) -> bool {
+    return ((inst >> 24) & 0xFF) == 0x10;
+}
+
+constexpr auto adrp_cond(u32 inst) -> bool {
+    return ((inst >> 24) & 0xFF) == 0x10;  // ADRP 指令的操作码
+}
+
+constexpr auto add_cond(u32 inst) -> bool {
+    return ((inst >> 24) & 0x1F) == 0x0B;  // ADD 指令的高位特征码
 }
 
 // to view patches, use https://armconverter.com/?lock=arm64
@@ -192,6 +196,7 @@ constexpr PatchData erpt_patch_data{ "0xE0031F2AC0035FD6" };
 constexpr PatchData nop_patch_data{ "0x1F2003D5" };
 constexpr PatchData mov0_patch_data{ "0xE0031FAA" };
 constexpr PatchData ctest_patch_data{ "0x00309AD2001EA1F2610100D4E0031FAAC0035FD6" };
+constexpr PatchData nim_patch_data{ "0xE2031FAA" };
 
 constexpr auto ret0_patch(u32 inst) -> PatchData { return ret0_patch_data; }
 constexpr auto ret1_patch(u32 inst) -> PatchData { return ret1_patch_data; }
@@ -202,6 +207,7 @@ constexpr auto nop_patch(u32 inst) -> PatchData { return nop_patch_data; }
 constexpr auto subs_patch(u32 inst) -> PatchData { return subi_cond(inst) ? (u8)0x1 : (u8)0x0; }
 constexpr auto mov0_patch(u32 inst) -> PatchData { return mov0_patch_data; }
 constexpr auto ctest_patch(u32 inst) -> PatchData { return ctest_patch_data; }
+constexpr auto nim_patch(u32 inst) -> PatchData { return nim_patch_data; }
 
 constexpr auto b_patch(u32 inst) -> PatchData {
     const u32 opcode = 0x14 << 24;
@@ -253,16 +259,26 @@ constexpr auto ctest_applied(const u8* data, u32 inst) -> bool {
     return ctest_patch(inst).cmp(data);
 }
 
+constexpr auto nim_applied(const u8* data, u32 inst) -> bool {
+    return nim_patch(inst).cmp(data);
+}
+
 constinit Patterns fs_patterns[] = {
-    { "noacidsigchk1", "0xC8FE4739", -24, 0, bl_cond, ret0_patch, ret0_applied, true, FW_VER_ANY, MAKEHOSVERSION(9,2,0) },
-    { "noacidsigchk2", "0x0210911F000072", -5, 0, bl_cond, ret0_patch, ret0_applied, true, FW_VER_ANY, MAKEHOSVERSION(9,2,0) },
-    { "noncasigchk_old", "0x1E42B9", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(14,2,1) },
-    { "noncasigchk_new", "0x3E4479", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(15,0,0), MAKEHOSVERSION(16,1,0) },
-    { "noncasigchk_new2", "0x258052", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0) },
-    { "nocntchk_old", "0x081C00121F05007181000054", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(14,2,1) },
-    { "nocntchk_new", "0x081C00121F05007141010054", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(15,0,0) },
-    { "nocntchk_FW19_1", "0xC003005401", 0, 0, bne_cond, ret1_patch, ret1_applied, true, MAKEHOSVERSION(19,0,0) },
-    { "nocntchk_FW19_2", "0x1C0012.050071..0054..00.60", -9, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(19,0,0) },
+    { "1_9A", "0x..00.34..b4e8.40b91f010871...54", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
+    { "10A", "0xfd7b43a9f44f42a9f65741a9ff030191c0035fd6", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,1) },
+    { "10.2.0_18A", "0x081C00121F050071..0054...37....", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,2,0), MAKEHOSVERSION(18,0,1) },
+    { "18.1.0A", "0xf803002ac0040034b3035ef8f30100b468220091", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(18,1,0), MAKEHOSVERSION(18,1,0) },
+    { "19A", "0x080340b9091c00123f050071610100541f050071", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(19,0,0) },
+
+    { "1_9B", "0x.0210911f000072.119f9a.....031faa", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
+    { "6C", "0x1f2001a9f5030032600200f9f40740f9f40000b4", -4, 0, add_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(6,0,0), MAKEHOSVERSION(6,2,0) },
+    { "1_9C", "0x081c00121f0500718100005478000037.cb4091", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
+
+    { "1_3D", "0x881e42b958808c521fc14271.f9ff54..1e4839", -5, 0, tbz_cond, nop_patch, nop_applied, true,  MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(3,0,2) },
+    { "4_9D", "0x881e42b91fc14271...54881e48391f090071", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(4,0,0), MAKEHOSVERSION(9,2,0) },
+    { "10D", "0x08613b91280000f9c0035fd6c0035fd600000000", -24, 0, adrp_cond, nop_patch, nop_applied, true,  MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,1) },
+    { "10_16D", "0x....1f..71..0054.1e48391f.0071", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,2,0),  MAKEHOSVERSION(16,1,0) },
+    { "17_19D", "0x02258052e0.0191e1032a..0694..00.", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0) },
 };
 
 constinit Patterns ldr_patterns[] = {
@@ -276,19 +292,20 @@ constinit Patterns erpt_patterns[] = {
 };
 
 constinit Patterns es_patterns[] = {
-    { "es1", "0x1F90013128928052", -4, 0, cbz_cond, b_patch, b_applied, true, FW_VER_ANY, MAKEHOSVERSION(13,2,1) },
-    { "es2", "0xC07240F9E1930091", -4, 0, tbz_cond, nop_patch, nop_applied, true, FW_VER_ANY, MAKEHOSVERSION(10,2,0) },
-    { "es3", "0xF3031FAA02000014", -4, 0, bne_cond, nop_patch, nop_applied, true, FW_VER_ANY, MAKEHOSVERSION(10,2,0) },
-    { "es4", "0xC0FDFF35A8C35838", -4, 0, mov_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(11,0,0), MAKEHOSVERSION(13,2,1) },
-    { "es5", "0xE023009145EEFF97", -4, 0, cbz_cond, b_patch, b_applied, true, MAKEHOSVERSION(11,0,0), MAKEHOSVERSION(13,2,1) },
-    { "es6", "0x.6300...0094A0..D1..FF97", 16, 0, mov2_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(14,0,0), MAKEHOSVERSION(17,0,1) },
-    { "es6a", "0x.6300...0094A0..D1..FF97", 16, 0, mov2_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(19,0,0) },
-    { "es7", "0x.6F00...0094A0..D1..FF97", 16, 0, mov2_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(18,0,0), MAKEHOSVERSION(18,1,0) },
-    { "es7_FW18-19", "0xFF97..132A...A9........FF.0491C0035FD6", 2, 0, mov2_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(18,0,0), MAKEHOSVERSION(19,0,0) },
+    { "1_2", "bf4300d1fd7b41a9f44fc2a8c0035fd6f50f1df8", -4, 0, add_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(2,2,0) },
+    { "2_8", "0xfd7b.a9f4.a9............", -4, 0, add_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(2,3,0), MAKEHOSVERSION(8,1,1) },
+    { "9", "0xfd7b.a9f4.a9............", -4, 0, add_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(9,0,0), MAKEHOSVERSION(9,2,0) },
+    { "10_11", "0xfd7b.a9f44f.a9....", -4, 0, mov_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(11,0,1) },
+    { "12_14", "0xf44f52a9fc8b40f9fd7b50a9ffc30491c0035fd6", -4, 0, add_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(12,0,0), MAKEHOSVERSION(14,1,2) },
+    { "15_19", "0xf44f.a9fc.40f9fd7b.a9ff.0491c0035fd6", -4, 0, mov_cond, mov0_patch, mov0_applied, true, MAKEHOSVERSION(15,0,0), MAKEHOSVERSION(19,0,0) },
 };
 
 constinit Patterns nifm_patterns[] = {
     { "ctest", "....................F40300AA....F30314AAE00314AA9F0201397F8E04F8", 16, -16, ctest_cond, ctest_patch, ctest_applied, true },
+};
+
+constinit Patterns nim_patterns[] = {
+    { "nim", ".0F00351F2003D5", 8 ,0, adr_cond, nim_patch, nim_applied, true },
 };
 
 // NOTE: add system titles that you want to be patched to this table.
@@ -302,6 +319,7 @@ constinit PatchEntry patches[] = {
     // es was added in fw 2
     { "es", 0x0100000000000033, es_patterns, MAKEHOSVERSION(2,0,0) },
     { "nifm", 0x010000000000000F, nifm_patterns },
+    { "nim", 0x0100000000000025, nim_patterns, MAKEHOSVERSION(17,0,0), },
 };
 
 struct EmummcPaths {
