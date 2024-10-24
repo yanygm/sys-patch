@@ -152,7 +152,7 @@ public:
     ConfigEntry config_17_19D{"fs", "17_19D", true};
     ConfigEntry config_noacidsigchk{"ldr", "noacidsigchk", true};
     ConfigEntry config_debug_flag{"ldr", "debug_flag", true};
-    ConfigEntry config_debug_flag_off{"ldr", "debug_flag_off", true};
+    ConfigEntry config_debug_flag_off{"ldr", "debug_flag_off", false};
     ConfigEntry config_erpt{"ldr", "erpt", true};
     ConfigEntry config_1_2{"es", "1_2", true};
     ConfigEntry config_2_8{"es", "2_8", true};
