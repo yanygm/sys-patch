@@ -75,10 +75,10 @@ public:
         auto list = new tsl::elm::List();
 
         list->addItem(new tsl::elm::CategoryHeader("Options"));
-        list->addItem(config_patch_sysmmc.create_list_item("Patch sysMMC"));
-        list->addItem(config_patch_emummc.create_list_item("Patch emuMMC"));
+        list->addItem(config_patch_sysmmc.create_list_item("Patch_sysmmc"));
+        list->addItem(config_patch_emummc.create_list_item("Patch_emummc"));
         list->addItem(config_logging.create_list_item("Logging"));
-        list->addItem(config_version_skip.create_list_item("Version skip"));
+        list->addItem(config_version_skip.create_list_item("Version_skip"));
 
         frame->setContent(list);
         return frame;
@@ -99,49 +99,69 @@ public:
         auto list = new tsl::elm::List();
 
         list->addItem(new tsl::elm::CategoryHeader("FS - 0100000000000000"));
-        list->addItem(config_noacidsigchk1.create_list_item("noacidsigchk1"));
-        list->addItem(config_noacidsigchk2.create_list_item("noacidsigchk2"));
-        list->addItem(config_noncasigchk_old.create_list_item("noncasigchk_old"));
-        list->addItem(config_noncasigchk_new.create_list_item("noncasigchk_new"));
-        list->addItem(config_noncasigchk_new2.create_list_item("noncasigchk_new2"));
-        list->addItem(config_nocntchk_old.create_list_item("nocntchk_old"));
-        list->addItem(config_nocntchk_new.create_list_item("nocntchk_new"));
+        list->addItem(config_1_9A.create_list_item("1_9A"));
+        list->addItem(config_10A.create_list_item("10A"));
+        list->addItem(config_10_18A.create_list_item("10_18A"));
+        list->addItem(config_18A.create_list_item("18A"));
+        list->addItem(config_19A.create_list_item("19A"));
+        list->addItem(config_1_9B.create_list_item("1_PB"));
+        list->addItem(config_6C.create_list_item("6C"));
+        list->addItem(config_1_9C.create_list_item("1_9C"));
+        list->addItem(config_1_3D.create_list_item("1_3D"));
+        list->addItem(config_4_9D.create_list_item("4_9D"));
+        list->addItem(config_10D.create_list_item("10D"));
+        list->addItem(config_10_16D.create_list_item("10_16D"));
+        list->addItem(config_17_19D.create_list_item("17_19D"));
 
         list->addItem(new tsl::elm::CategoryHeader("LDR - 0100000000000001"));
         list->addItem(config_noacidsigchk.create_list_item("noacidsigchk"));
+        list->addItem(config_debug_flag.create_list_item("debug_flag"));
+        list->addItem(config_debug_flag_off.create_list_item("debug_flag_off"));
+        list->addItem(config_erpt.create_list_item("erpt"));
 
         list->addItem(new tsl::elm::CategoryHeader("ES - 0100000000000033"));
-        list->addItem(config_es1.create_list_item("es1"));
-        list->addItem(config_es2.create_list_item("es2"));
-        list->addItem(config_es3.create_list_item("es3"));
-        list->addItem(config_es4.create_list_item("es4"));
-        list->addItem(config_es5.create_list_item("es5"));
-        list->addItem(config_es6.create_list_item("es6"));
-        list->addItem(config_es7.create_list_item("es7"));
+        list->addItem(config_1_2.create_list_item("1_2"));
+        list->addItem(config_2_8.create_list_item("2_8"));
+        list->addItem(config_9.create_list_item("9"));
+        list->addItem(config_10_11.create_list_item("10_11"));
+        list->addItem(config_12_14.create_list_item("12_14"));
+        list->addItem(config_15_19.create_list_item("15_19"));
 
         list->addItem(new tsl::elm::CategoryHeader("NIFM - 010000000000000F"));
         list->addItem(config_ctest.create_list_item("ctest"));
+
+        list->addItem(new tsl::elm::CategoryHeader("NIM - 0100000000000025"));
+        list->addItem(config_nim.create_list_item("nim"));
 
         frame->setContent(list);
         return frame;
     }
 
-    ConfigEntry config_noacidsigchk1{"fs", "noacidsigchk1", true};
-    ConfigEntry config_noacidsigchk2{"fs", "noacidsigchk2", true};
-    ConfigEntry config_noncasigchk_old{"fs", "noncasigchk_old", true};
-    ConfigEntry config_noncasigchk_new{"fs", "noncasigchk_new", true};
-    ConfigEntry config_noncasigchk_new2{"fs", "noncasigchk_new2", true};
-    ConfigEntry config_nocntchk_old{"fs", "nocntchk_old", true};
-    ConfigEntry config_nocntchk_new{"fs", "nocntchk_new", true};
+    ConfigEntry config_1_9A{"fs", "1_9A", true};
+    ConfigEntry config_10A{"fs", "10A", true};
+    ConfigEntry config_10_18A{"fs", "10_18A", true};
+    ConfigEntry config_18A{"fs", "18A", true};
+    ConfigEntry config_19A{"fs", "19A", true};
+    ConfigEntry config_1_9B{"fs", "1_9B", true};
+    ConfigEntry config_6C{"fs", "6C", true};
+    ConfigEntry config_1_9C{"fs", "1_9C", true};
+    ConfigEntry config_1_3D{"fs", "1_3D", true};
+    ConfigEntry config_4_9D{"fs", "4_9D", true};
+    ConfigEntry config_10D{"fs", "10D", true};
+    ConfigEntry config_10_16D{"fs", "10_16D", true};
+    ConfigEntry config_17_19D{"fs", "17_19D", true};
     ConfigEntry config_noacidsigchk{"ldr", "noacidsigchk", true};
-    ConfigEntry config_es1{"es", "es1", true};
-    ConfigEntry config_es2{"es", "es2", true};
-    ConfigEntry config_es3{"es", "es3", true};
-    ConfigEntry config_es4{"es", "es4", true};
-    ConfigEntry config_es5{"es", "es5", true};
-    ConfigEntry config_es6{"es", "es6", true};
-    ConfigEntry config_es7{"es", "es7", true};
-    ConfigEntry config_ctest{"nifm", "ctest", false};
+    ConfigEntry config_debug_flag{"ldr", "debug_flag", true};
+    ConfigEntry config_debug_flag_off{"ldr", "debug_flag_off", true};
+    ConfigEntry config_erpt{"ldr", "erpt", true};
+    ConfigEntry config_1_2{"es", "1_2", true};
+    ConfigEntry config_2_8{"es", "2_8", true};
+    ConfigEntry config_9{"es", "9", true};
+    ConfigEntry config_10_11{"es", "10_11", true};
+    ConfigEntry config_12_14{"es", "12_14", true};
+    ConfigEntry config_15_19{"es", "15_19", true};
+    ConfigEntry config_ctest{"nifm", "ctest", true};
+    ConfigEntry config_nim{"nim", "nim", true};
 };
 
 class GuiLog final : public tsl::Gui {
