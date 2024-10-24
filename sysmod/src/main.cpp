@@ -274,11 +274,11 @@ constinit Patterns fs_patterns[] = {
     { "6C", "0x1f2001a9f5030032600200f9f40740f9f40000b4", -4, 0, add_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(6,0,0), MAKEHOSVERSION(6,2,0) },
     { "1_9C", "0x081c00121f0500718100005478000037.cb4091", -4, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
 
-    { "1_3D", "0x881e42b958808c521fc14271.f9ff54..1e4839", -5, 0, tbz_cond, nop_patch, nop_applied, true,  MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(3,0,2) },
-    { "4_9D", "0x881e42b91fc14271...54881e48391f090071", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(4,0,0), MAKEHOSVERSION(9,2,0) },
+    { "1_3D", "0x881e42b958808c521fc14271.f9ff54..1e4839", -4, 0, tbz_cond, nop_patch, nop_applied, true,  MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(3,0,2) },
+    { "4_9D", "0x881e42b91fc14271...54881e48391f090071", -4, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(4,0,0), MAKEHOSVERSION(9,2,0) },
     { "10D", "0x08613b91280000f9c0035fd6c0035fd600000000", -24, 0, adrp_cond, nop_patch, nop_applied, true,  MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,1) },
-    { "10_16D", "0x....1f..71..0054.1e48391f.0071", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,2,0),  MAKEHOSVERSION(16,1,0) },
-    { "17_19D", "0x02258052e0.0191e1032a..0694..00.", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0) },
+    { "10_16D", "0x....1f..71..0054.1e48391f.0071", -4, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,2,0),  MAKEHOSVERSION(16,1,0) },
+    { "17_19D", "0x02258052e0.0191e1032a..0694..00.", -4, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0) },
 };
 
 constinit Patterns ldr_patterns[] = {
