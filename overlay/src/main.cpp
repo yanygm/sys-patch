@@ -117,6 +117,8 @@ public:
         list->addItem(config_noacidsigchk.create_list_item("noacidsigchk"));
         list->addItem(config_debug_flag.create_list_item("debug_flag"));
         list->addItem(config_debug_flag_off.create_list_item("debug_flag_off"));
+
+        list->addItem(new tsl::elm::CategoryHeader("ERPT - 010000000000002b"));
         list->addItem(config_erpt.create_list_item("erpt"));
 
         list->addItem(new tsl::elm::CategoryHeader("ES - 0100000000000033"));
@@ -160,7 +162,7 @@ public:
     ConfigEntry config_10_11{"es", "10_11", true};
     ConfigEntry config_12_14{"es", "12_14", true};
     ConfigEntry config_15_19{"es", "15_19", true};
-    ConfigEntry config_ctest{"nifm", "ctest", true};
+    ConfigEntry config_ctest{"nifm", "ctest", false};
     ConfigEntry config_nim{"nim", "nim", true};
 };
 

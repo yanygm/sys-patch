@@ -305,7 +305,7 @@ constinit Patterns nifm_patterns[] = {
 };
 
 constinit Patterns nim_patterns[] = {
-    { "nim", ".0F00351F2003D5", 8 ,0, adr_cond, nim_patch, nim_applied, true },
+    { "nim", ".0F00351F2003D5", 8 ,0, adr_cond, nim_patch, nim_applied, true, MAKEHOSVERSION(17,0,0) },
 };
 
 // NOTE: add system titles that you want to be patched to this table.
@@ -317,8 +317,9 @@ constinit PatchEntry patches[] = {
     // erpt no write patch
     { "erpt", 0x010000000000002B, erpt_patterns, MAKEHOSVERSION(10,0,0) },
     // es was added in fw 2
-    { "es", 0x0100000000000033, es_patterns, MAKEHOSVERSION(2,0,0) },
+    { "es", 0x0100000000000033, es_patterns },
     { "nifm", 0x010000000000000F, nifm_patterns },
+    // es was added in fw 17
     { "nim", 0x0100000000000025, nim_patterns, MAKEHOSVERSION(17,0,0), },
 };
 
