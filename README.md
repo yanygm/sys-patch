@@ -1,6 +1,6 @@
 # sys-patch
 
-A script-like system module that patches **fs**, **es**, **ldr**, **nifm**, and **nim**on boot.
+A script-like system module that patches **fs**, **es**, **ldr**, **nifm**, and **nim** on boot.
 
 ---
 
@@ -43,7 +43,7 @@ The overlay can be used to change the config options and to see what patches are
 - Install [devkitpro](https://devkitpro.org/wiki/Getting_Started)
 - Run the following:
   ```sh
-  git clone --recurse-submodules https://github.com/ITotalJustice/sys-patch.git
+  git clone --recurse-submodules https://github.com/lsp199308/sys-patch.git
   cd ./sys-patch
   make
   ```
@@ -94,7 +94,8 @@ No, I would personally recommend continuing to use sigpatches. Reason being is t
 ## Credits / Thanks
 
 Software is built on the shoulders of giants. This tool wouldn't be possible without these people:
-
+- ITotalJustice (Source Project)
+- borntohonk （reverse engineering）
 - MrDude
 - BornToHonk (farni)
 - TeJay
