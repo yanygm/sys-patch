@@ -95,7 +95,7 @@ No, I would personally recommend continuing to use sigpatches. Reason being is t
 
 Software is built on the shoulders of giants. This tool wouldn't be possible without these people:
 - ITotalJustice (Source Project)
-- [Reverse engineering by borntohonk] （https://github.com/borntohonk/Switch-Ghidra-Guides）
+- [borntohonk](https://github.com/borntohonk/Switch-Ghidra-Guides)
 - MrDude
 - BornToHonk (farni)
 - TeJay
