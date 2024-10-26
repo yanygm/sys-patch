@@ -289,10 +289,8 @@ constinit Patterns fs_patterns[] = {
 
     //补丁：1f2003d5
     { "10D", "0xe80a009008613b91280000f9c0035fd6", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,0) },
-    { "10-14D", "0x1e42b9", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(14,1,2) },
-    { "15-16D", "0x3e4479", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(15,0,0), MAKEHOSVERSION(16,1,0) },
-    { "17-18D", "0x0094..0036.258052", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0), MAKEHOSVERSION(18,1,0) },
-    { "19D", "0x0094..0036...52...91", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(19,0,0) },
+    { "15-16D", "0x0036.......71..0054..4839", -2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(16,1,0) },
+    { "17-19D", "0x.94..0036.258052", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0), },//fw17-fw19
 };
 
 constinit Patterns ldr_patterns[] = {
