@@ -256,8 +256,6 @@ constinit Patterns fs_patterns[] = {
     { "1-9A", "0x........0036..00b4..40b9", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
     { "1-9B", "0x....0094.0210911f000072", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
     { "1-9C", "0x.40f9...94081c00121f050071", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
-    //10.0.0
-    //补丁：e0031f2a
     { "10-18A", "0x40f9...9408.0012.050071", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(18,1,0) },
     { "19A", "0x40f9...94..40b9..0012", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(19,0,0) },
 
