@@ -106,7 +106,7 @@ public:
         list->addItem(config_19A.create_list_item("19A"));
         list->addItem(config_1_9D.create_list_item("1_9D"));
         list->addItem(config_10_16D.create_list_item("10_16D"));
-        list->addItem(config_17_19D.create_list_item("19D"));
+        list->addItem(config_17_19D.create_list_item("17_19D"));
 
         list->addItem(new tsl::elm::CategoryHeader("LDR - 0100000000000001"));
         list->addItem(config_noacidsigchk.create_list_item("noacidsigchk"));
