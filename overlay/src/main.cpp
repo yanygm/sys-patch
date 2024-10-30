@@ -114,11 +114,6 @@ public:
 
         list->addItem(new tsl::elm::CategoryHeader("LDR - 0100000000000001"));
         list->addItem(config_noacidsigchk.create_list_item("noacidsigchk"));
-        list->addItem(config_debug_flag.create_list_item("debug_flag"));
-        list->addItem(config_debug_flag_off.create_list_item("debug_flag_off"));
-
-        list->addItem(new tsl::elm::CategoryHeader("ERPT - 010000000000002b"));
-        list->addItem(config_erpt.create_list_item("erpt"));
 
         list->addItem(new tsl::elm::CategoryHeader("ES - 0100000000000033"));
         list->addItem(config_1.create_list_item("1"));
@@ -148,14 +143,11 @@ public:
     ConfigEntry config_17_18D{"fs", "17_18D", true};
     ConfigEntry config_19D{"fs", "19D", true};
     ConfigEntry config_noacidsigchk{"ldr", "noacidsigchk", true};
-    ConfigEntry config_debug_flag{"ldr", "debug_flag", false};
-    ConfigEntry config_debug_flag_off{"ldr", "debug_flag_off", false};
-    ConfigEntry config_erpt{"ldr", "erpt", true};
     ConfigEntry config_1{"es", "1", true};
     ConfigEntry config_2_8{"es", "2_8", true};
     ConfigEntry config_9_19{"es", "9_19", true};
-    ConfigEntry config_ctest{"nifm", "ctest", false};
-    ConfigEntry config_nim{"nim", "nim", false};
+    ConfigEntry config_ctest{"nifm", "ctest", true};
+    ConfigEntry config_nim{"nim", "nim", true};
 };
 
 class GuiLog final : public tsl::Gui {
