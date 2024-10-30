@@ -251,7 +251,6 @@ constexpr auto nim_applied(const u8* data, u32 inst) -> bool {
 
 constinit Patterns fs_patterns[] = {
     //fat32 & exfat
-    //1.0.0-9.2.0系统
     //补丁：e0031f2a
     { "1-9A", "0x........0036..00b4..40b9", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
     { "1-9B", "0x....0094.0210911f000072", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
