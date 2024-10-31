@@ -152,10 +152,6 @@ constexpr auto subs_cond(u32 inst) -> bool {
     return subi_cond(inst) || subr_cond(inst);
 }
 
-constexpr auto no_cond(u32 inst) -> bool {
-    return true;
-}
-
 constexpr auto cbz_cond(u32 inst) -> bool {
     const auto type = inst >> 24;
     return type == 0x34 || type == 0xB4;
@@ -198,9 +194,6 @@ constexpr auto mov2_cond(u32 inst) -> bool {
 // to view patches, use https://armconverter.com/?lock=arm64
 constexpr PatchData ret0_patch_data{ "0xE0031F2A" };
 constexpr PatchData ret1_patch_data{ "0x10000014" }; //b #0x40
-constexpr PatchData debug_flag_patch_data{ "0xC9F8FF54" }; // b.ls #0xffffffffffffff18
-constexpr PatchData debug_flag_off_patch_data{ "0x29FAFF54" };
-constexpr PatchData erpt_patch_data{ "0xE0031F2AC0035FD6" };
 constexpr PatchData nop_patch_data{ "0x1F2003D5" };
 constexpr PatchData mov0_patch_data{ "0xE0031FAA" };
 constexpr PatchData ctest_patch_data{ "0x00309AD2001EA1F2610100D4E0031FAAC0035FD6" };
@@ -208,9 +201,6 @@ constexpr PatchData nim_patch_data{ "0xE2031FAA" };
 
 constexpr auto ret0_patch(u32 inst) -> PatchData { return ret0_patch_data; }
 constexpr auto ret1_patch(u32 inst) -> PatchData { return ret1_patch_data; }
-constexpr auto debug_flag_patch(u32 inst) -> PatchData { return debug_flag_patch_data; }
-constexpr auto debug_flag_off_patch(u32 inst) -> PatchData { return debug_flag_off_patch_data; }
-constexpr auto erpt_patch(u32 inst) -> PatchData { return erpt_patch_data; }
 constexpr auto nop_patch(u32 inst) -> PatchData { return nop_patch_data; }
 constexpr auto subs_patch(u32 inst) -> PatchData { return subi_cond(inst) ? (u8)0x1 : (u8)0x0; }
 constexpr auto mov0_patch(u32 inst) -> PatchData { return mov0_patch_data; }
@@ -229,18 +219,6 @@ constexpr auto ret0_applied(const u8* data, u32 inst) -> bool {
 
 constexpr auto ret1_applied(const u8* data, u32 inst) -> bool {
     return ret1_patch(inst).cmp(data);
-}
-
-constexpr auto debug_flag_applied(const u8* data, u32 inst) -> bool {
-    return debug_flag_patch(inst).cmp(data);
-}
-
-constexpr auto debug_flag_off_applied(const u8* data, u32 inst) -> bool {
-    return debug_flag_off_patch(inst).cmp(data);
-}
-
-constexpr auto erpt_applied(const u8* data, u32 inst) -> bool {
-    return erpt_patch(inst).cmp(data);
 }
 
 constexpr auto nop_applied(const u8* data, u32 inst) -> bool {
@@ -273,36 +251,21 @@ constexpr auto nim_applied(const u8* data, u32 inst) -> bool {
 
 constinit Patterns fs_patterns[] = {
     //fat32 & exfat
-    //exfat2.0.0系统+
-    //1.0.0-9.2.0系统
     //补丁：e0031f2a
     { "1-9A", "0x........0036..00b4..40b9", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
     { "1-9B", "0x....0094.0210911f000072", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
     { "1-9C", "0x.40f9...94081c00121f050071", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
-    //补丁：1f2003d5
-    { "1-9D", "0x.97..0036881e42b9", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
-    //10.0.0
-    //补丁：e0031f2a
-    { "10A", "0x0091c5b10194fd7b43a9f44f42a9", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,0) },
-    { "10-18A", "0x40f9...9408.0012.050071", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,2,0), MAKEHOSVERSION(18,1,0) },
+    { "10-18A", "0x40f9...9408.0012.050071", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(18,1,0) },
     { "19A", "0x40f9...94..40b9..0012", 2, 0, bl_cond, ret0_patch, ret0_applied, true, MAKEHOSVERSION(19,0,0) },
 
     //补丁：1f2003d5
-    { "10D", "0xe80a009008613b91280000f9c0035fd6", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(10,1,0) },
-    { "10-14D", "0x1e42b9", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(14,1,2) },
-    { "15-16D", "0x3e4479", -5, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(15,0,0), MAKEHOSVERSION(16,1,0) },
-    { "17-18D", "0x0094..0036.258052", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0), MAKEHOSVERSION(18,1,0) },
-    { "19D", "0x0094..0036...52...91", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(19,0,0) },
+    { "1-9D", "0x.97..0036881e42b9", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(1,0,0), MAKEHOSVERSION(9,2,0) },
+    { "10-16D", "0x0036.......71..0054..4839", -2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(10,0,0), MAKEHOSVERSION(16,1,0) },
+    { "17-19D", "0x.94..0036.258052", 2, 0, tbz_cond, nop_patch, nop_applied, true, MAKEHOSVERSION(17,0,0), },//fw17-fw19
 };
 
 constinit Patterns ldr_patterns[] = {
     { "noacidsigchk", "0xFD7B.A8C0035FD6", 16, 2, subs_cond, subs_patch, subs_applied, true },
-    { "debug_flag", "0x6022403900010035", -4, 0, no_cond, debug_flag_patch, debug_flag_applied, true },
-    { "debug_flag_off", "0x6022403900010035", -4, 0, no_cond, debug_flag_off_patch, debug_flag_off_applied, true },
-};
-
-constinit Patterns erpt_patterns[] = {
-    { "no_erpt", "0xFD7B02A9FD830091F76305A9", -4, 0, no_cond, erpt_patch, erpt_applied, true },
 };
 
 constinit Patterns es_patterns[] = {
@@ -325,9 +288,6 @@ constinit PatchEntry patches[] = {
     { "fs", 0x0100000000000000, fs_patterns },
     // ldr needs to be patched in fw 10+
     { "ldr", 0x0100000000000001, ldr_patterns, MAKEHOSVERSION(10,0,0) },
-    // erpt no write patch
-    { "erpt", 0x010000000000002B, erpt_patterns, MAKEHOSVERSION(10,0,0) },
-    // es was added in fw 2
     { "es", 0x0100000000000033, es_patterns },
     { "nifm", 0x010000000000000F, nifm_patterns },
     // es was added in fw 17
